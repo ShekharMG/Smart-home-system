@@ -1,0 +1,42 @@
+int pir = 3; // PIR sensor pin
+int doorpin = 2; // Door sensor pin
+int led = 5; // LED pin
+int buzz = 4; // Buzzer pin
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(pir, INPUT);
+    pinMode(doorpin, INPUT_PULLUP);
+    pinMode(led, OUTPUT);
+    pinMode(buzz, OUTPUT);
+}
+
+void loop() {
+    int pirValue = digitalRead(pir);
+    int doorStatus = digitalRead(doorpin);
+
+    Serial.print("Motion: ");
+    Serial.print(pirValue);
+    Serial.print(" | Door: ");
+    Serial.println(doorStatus);
+
+    // Display door status
+    if (doorStatus == HIGH) {
+        Serial.println("The door is opened");
+    } else {
+        Serial.println("The door is closed");
+    }
+    delay(10000);
+
+    // Check conditions for LED and buzzer control
+    if (pirValue == HIGH || doorStatus == HIGH) {
+        digitalWrite(led, HIGH);
+        digitalWrite(buzz, HIGH); // Turn on the buzzer
+        Serial.println("Warning: Motion detected or door opened!");
+    } else {
+        digitalWrite(led, LOW);
+        digitalWrite(buzz, LOW); // Turn off the buzzer
+    }
+
+    delay(100); // Adjust delay as needed
+}
